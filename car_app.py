@@ -29,8 +29,11 @@ def main():
     # Display the initial state
     st.write("I'm a car!")
 
+    # Counter for creating unique keys
+    button_counter = 0
+
     # Main interaction loop
-    while st.button("Continue"):
+    while st.button(f"Continue {button_counter}"):
         action = st.radio("What should I do?", ['Accelerate', 'Brake', 'Show Odometer', 'Show Average Speed'])
 
         if action == 'Accelerate':
@@ -48,6 +51,9 @@ def main():
             st.write("The car's average speed was {} kph".format(my_car.average_speed()))
 
         my_car.step()
+
+        # Increment the button counter for a unique key
+        button_counter += 1
 
 if __name__ == '__main__':
     main()
