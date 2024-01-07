@@ -1,5 +1,5 @@
 import sys
-pip install transformers
+!{sys.executable} -m pip install transformers
 
 import streamlit as st
 from transformers import BertTokenizer
