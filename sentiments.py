@@ -1,5 +1,8 @@
 import sys
-!{sys.executable} -m pip install transformers
+import subprocess
+
+# Install transformers if not already installed
+subprocess.run([sys.executable, "-m", "pip", "install", "transformers"])
 
 import streamlit as st
 from transformers import BertTokenizer
