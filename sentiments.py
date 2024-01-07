@@ -1,6 +1,9 @@
 import sys
 import subprocess
 
+print(sys.executable)
+print(sys.path)
+
 # Install transformers using the --user flag
 subprocess.run([sys.executable, "-m", "pip", "install", "--user", "transformers"])
 
