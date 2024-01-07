@@ -1,3 +1,6 @@
+import sys
+!{sys.executable} -m pip install transformers
+
 import streamlit as st
 from transformers import BertTokenizer
 import tensorflow as tf
