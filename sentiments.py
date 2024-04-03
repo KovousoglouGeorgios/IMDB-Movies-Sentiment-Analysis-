@@ -16,14 +16,15 @@ from tensorflow import keras
 tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
 
 # Load the saved model
-model = keras.models.load_model(r"C:\Users\User\PycharmProjects\pythonProject-streamlit\bert_sentiment_model")
+model_url = "https://raw.githubusercontent.com/KovousoglouGeorgios/IMDB-Movies-Sentiment-Analysis-/master/bert_sentiment_model"
+model = keras.models.load_model(model_url)
 
-import os
+#import os
 
-model_directory = "C:/Users/User/PycharmProjects/pythonProject-streamlit/bert_sentiment_model"
+#model_directory = "C:/Users/User/PycharmProjects/pythonProject-streamlit/bert_sentiment_model"
 
 # Print the contents of the directory
-print(os.listdir(model_directory))
+#print(os.listdir(model_directory))
 
 # Streamlit app
 st.title("Sentiment Analysis with BERT")
