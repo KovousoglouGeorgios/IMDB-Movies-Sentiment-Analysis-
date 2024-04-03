@@ -1,36 +1,28 @@
-import sys
-import subprocess
-
-print(sys.executable)
-print(sys.path)
-
-# Install transformers using the --user flag
-subprocess.run([sys.executable, "-m", "pip", "install", "--user", "transformers"])
-
 import streamlit as st
 from transformers import BertTokenizer
 import tensorflow as tf
-from tensorflow import keras
 
 # Load BERT tokenizer
 tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
 
-# Load the saved model
-model_url = "https://raw.githubusercontent.com/KovousoglouGeorgios/IMDB-Movies-Sentiment-Analysis-/master/bert_sentiment_model"
-model = keras.models.load_model(model_url)
-
-#import os
-
-#model_directory = "C:/Users/User/PycharmProjects/pythonProject-streamlit/bert_sentiment_model"
-
-# Print the contents of the directory
-#print(os.listdir(model_directory))
-
 # Streamlit app
 st.title("Sentiment Analysis with BERT")
 
+# Load the saved model
+@st.cache(allow_output_mutation=True)
+def load_model():
+    model_path = r"C:\Users\User\PycharmProjects\SentimentAnalysis\bert_sentiment_model"
+    loaded_model = tf.saved_model.load(model_path)
+    return loaded_model
+
+loaded_model = load_model()
+
 # Input text box for user input
 user_input = st.text_area("Enter your movie review:", "Type here...")
+
+# Clear the default text when the user clicks on the text area
+if user_input == "Type here...":
+    user_input = ""
 
 # Button to perform sentiment analysis
 if st.button("Analyze Sentiment"):
@@ -39,7 +31,7 @@ if st.button("Analyze Sentiment"):
         tf_batch = tokenizer([user_input], max_length=128, padding=True, truncation=True, return_tensors='tf')
 
         # Make predictions with the fine-tuned model
-        tf_outputs = model(tf_batch)
+        tf_outputs = loaded_model(tf_batch)
         tf_predictions = tf.nn.softmax(tf_outputs['logits'], axis=-1)
 
         # Define class labels
@@ -48,8 +40,11 @@ if st.button("Analyze Sentiment"):
         # Extract predicted label
         label = tf.argmax(tf_predictions, axis=1).numpy()[0]
 
-        # Display the result
-        st.write(f"Prediction: {labels[label]}")
+        # Display the result with colored text
+        if label == 0:
+            st.write(f"<span style='color:red'>Prediction: {labels[label]}</span>", unsafe_allow_html=True)
+        else:
+            st.write(f"<span style='color:green'>Prediction: {labels[label]}</span>", unsafe_allow_html=True)
     else:
         st.warning("Please enter a movie review.")
 
