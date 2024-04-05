@@ -1,4 +1,4 @@
-# IMDB Movies Sentiment Analysis
+# <h1 align="center">IMDB Movies Sentiment Analysis</h1>
 
 The objective of this project is to conduct a performance comparison between classic statistical methods, including Logistic Regression, Support Vector Machine, Bayesian approaches, and Bidirectional Encoder Representations from Transformers (BERT), the preeminent algorithm for sentiment analysis.
 
@@ -8,4 +8,11 @@ Following the execution of text processing steps, the normalized dataset was gen
 
 In contrast to the statistical methods, the BERT algorithm exhibited an accuracy of 0.506 before training, which significantly improved to 0.886 after training. Overall, the accuracy evaluation metric indicates that the BERT approach outperforms the classical statistical methods. It is noteworthy that data preparation is automated in BERT, but the training processing time is considerably longer compared to other methods. Consequently, considering both performance and efficiency, the BERT method is preferable, whereas the classic statistical methods offer faster processing times.
 
-In this demo a Logistic Regression trained model used for deployment reasons. The whole project description is presented in the jupyternotebook file. 
+In this demo with link https://lr-sentimentanalysis.streamlit.app/ a Logistic Regression trained model used for deployment reasons. The whole project description is presented in the jupyternotebook file https://github.com/KovousoglouGeorgios/IMDB-Movies-Sentiment-Analysis-/blob/803d1fe74b6ef9e6d88c024e7e5d07fe2d2a472d/IMDB%20Movies%20Sentiment%20Analysis%20.ipynb. 
+
+In this demo with [link](https://lr-sentimentanalysis.streamlit.app/), a Logistic Regression trained model used for deployment reasons. The whole project description is presented in the [jupyternotebook file](https://github.com/KovousoglouGeorgios/IMDB-Movies-Sentiment-Analysis-/blob/803d1fe74b6ef9e6d88c024e7e5d07fe2d2a472d/IMDB%20Movies%20Sentiment%20Analysis%20.ipynb).
+
+
+
+
+
