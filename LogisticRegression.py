@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 import re
 from nltk.tokenize import RegexpTokenizer
 from nltk.stem import SnowballStemmer
+import nltk
 nltk.download('stopwords')
 from nltk.corpus import stopwords
 import spacy
