@@ -71,21 +71,36 @@ class TextProcessor:
         lemmatized_text = ' '.join([token.lemma_ for token in doc])
         return lemmatized_text
 
-
 class SentimentAnalyzer:
     def __init__(self):
-        # Load the saved models
-        self.loaded_lr_model = joblib.load('logistic_regression_model.pkl')
-        self.loaded_mnb_model = joblib.load('multinomial_naive_bayes_model.pkl')
-        self.loaded_svm_model = joblib.load('svm_model.pkl')
+        # Check if models are downloaded, if not, download them
+        models_exist = all(os.path.exists(model_file) for model_file in ['logistic_regression_model.pkl', 'multinomial_naive_bayes_model.pkl', 'svm_model.pkl', 'tfidf_vectorizer.pkl'])
+        if not models_exist:
+            self.download_models()
 
-        # Load TF-IDF vectorizer
-        self.tv = joblib.load('tfidf_vectorizer.pkl')
+        # Load the saved models
+        try:
+            self.loaded_lr_model = joblib.load('logistic_regression_model.pkl')
+            self.loaded_mnb_model = joblib.load('multinomial_naive_bayes_model.pkl')
+            self.loaded_svm_model = joblib.load('svm_model.pkl')
+
+            # Load TF-IDF vectorizer
+            self.tv = joblib.load('tfidf_vectorizer.pkl')
+        except FileNotFoundError:
+            st.error("Model files not found. Please ensure that the models are downloaded and placed in the correct directory.")
+            st.stop()
 
         # Instantiate data preprocessing classes
         self.data_cleaner = DataCleaner()
         self.text_processor = TextProcessor()
         self.lb = LabelBinarizer()
+
+    @staticmethod
+    def download_models():
+        base_url = 'https://raw.githubusercontent.com/KovousoglouGeorgios/IMDB-Movies-Sentiment-Analysis-/master/'
+        files = ['logistic_regression_model.pkl', 'multinomial_naive_bayes_model.pkl', 'svm_model.pkl', 'tfidf_vectorizer.pkl']
+        for file in files:
+            wget.download(base_url + file, file)
 
     def preprocess_comment(self, comment):
         # Apply preprocessing steps
