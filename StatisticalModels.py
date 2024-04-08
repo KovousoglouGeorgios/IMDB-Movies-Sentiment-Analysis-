@@ -12,6 +12,7 @@ from nltk.corpus import stopwords
 from textblob import TextBlob
 import spacy
 import os
+import wget
 
 class DataReview:
     """Class for describing the dataset"""
