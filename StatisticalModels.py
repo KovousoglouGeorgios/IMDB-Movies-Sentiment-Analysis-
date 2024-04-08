@@ -13,6 +13,7 @@ from textblob import TextBlob
 import spacy
 import os
 import wget
+import urllib.error
 
 class DataReview:
     """Class for describing the dataset"""
@@ -78,19 +79,11 @@ class SentimentAnalyzer:
         # Check if models are downloaded, if not, download them
         models_exist = all(os.path.exists(model_file) for model_file in ['logistic_regression_model.pkl', 'multinomial_naive_bayes_model.pkl', 'svm_model.pkl', 'tfidf_vectorizer.pkl'])
         if not models_exist:
-            self.download_models()
-
-        # Load the saved models
-        try:
-            self.loaded_lr_model = joblib.load('logistic_regression_model.pkl')
-            self.loaded_mnb_model = joblib.load('multinomial_naive_bayes_model.pkl')
-            self.loaded_svm_model = joblib.load('svm_model.pkl')
-
-            # Load TF-IDF vectorizer
-            self.tv = joblib.load('tfidf_vectorizer.pkl')
-        except FileNotFoundError:
-            st.error("Model files not found. Please ensure that the models are downloaded and placed in the correct directory.")
-            st.stop()
+            try:
+                self.download_models()
+            except urllib.error.HTTPError as e:
+                st.error(f"Error downloading models: {e}")
+                st.stop()
 
         # Instantiate data preprocessing classes
         self.data_cleaner = DataCleaner()
