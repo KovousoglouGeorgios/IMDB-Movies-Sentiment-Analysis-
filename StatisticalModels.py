@@ -13,6 +13,9 @@ from textblob import TextBlob
 import spacy
 import os
 import wget
+import nltk
+
+nltk.download('stopwords')
 
 class DataReview:
     """Class for describing the dataset"""
@@ -25,8 +28,7 @@ class DataReview:
 
     def balance_sentiments(self):
         return self.data.iloc[:, -1].value_counts()
-
-
+        
 class DataCleaner:
     """Class for cleaning and preprocessing text data."""
 
