@@ -13,7 +13,6 @@ from textblob import TextBlob
 import spacy
 import os
 import wget
-import urllib.error
 
 class DataReview:
     """Class for describing the dataset"""
@@ -74,16 +73,24 @@ class TextProcessor:
         lemmatized_text = ' '.join([token.lemma_ for token in doc])
         return lemmatized_text
 
-class SentimentAnalyzer:
+class SentimentAnalyzer:    
     def __init__(self):
         # Check if models are downloaded, if not, download them
-        models_exist = all(os.path.exists(model_file) for model_file in ['logistic_regression_model.pkl', 'multinomial_naive_bayes_model.pkl', 'svm_model.pkl', 'tfidf_vectorizer.pkl'])
+        models_exist = all(os.path.exists(model_file) for model_file in ['logistic_regression_model.pkl', 'multinomial_nb_model.pkl', 'svm_model.pkl', 'tfidf_vectorizer.pkl'])
         if not models_exist:
-            try:
-                self.download_models()
-            except urllib.error.HTTPError as e:
-                st.error(f"Error downloading models: {e}")
-                st.stop()
+            self.download_models()
+            
+        # Load the saved models
+        try:
+            self.loaded_lr_model = joblib.load('logistic_regression_model.pkl')
+            self.loaded_mnb_model = joblib.load('multinomial_nb_model.pkl')
+            self.loaded_svm_model = joblib.load('svm_model.pkl')
+
+            # Load TF-IDF vectorizer
+            self.tv = joblib.load('tfidf_vectorizer.pkl')
+        except FileNotFoundError:
+            st.error("Model files not found. Please ensure that the models are downloaded and placed in the correct directory.")
+            st.stop()
 
         # Instantiate data preprocessing classes
         self.data_cleaner = DataCleaner()
@@ -121,7 +128,7 @@ class SentimentAnalyzer:
 analyzer = SentimentAnalyzer()
 
 # Define function to get sentiment prediction and corresponding color
-def cget_sentiment_label(prediction):
+def get_sentiment_label(prediction):
     if prediction == 0:
         return "Negative", "#FF5733"  # Change the color code to red
     elif prediction == 1:
